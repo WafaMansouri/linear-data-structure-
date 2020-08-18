@@ -1,0 +1,45 @@
+//Solution 1 with an Array
+ALGORITHM sum-overlapping_elements_Method1
+VAR
+    arr1,arr2: ARRAY_OF INTEGER; 
+    i,j: INTEGER;
+    sum: INTEGER:=0;
+BEGIN
+    READ(arr1);
+    READ(arr2);
+    FOR i FROM 0 TO arr1.length-1 STEP 1  DO
+        j:=0;
+        WHILE(j<arr2.length AND arr1[i]<>arr2[j]) DO
+            j:=j+1;
+        END_WHILE
+        IF (j<arr2.length) THEN
+            sum:=sum+arr1[i]*2;
+        END_IF
+    END_FOR
+END
+//Solution 2 with Hash Table
+ALGORITHM sum_overlapping_element_Method2
+VAR
+    htab: HASH_TABLE<INTEGER,INTEGER>;
+    arr1,arr2:ARRAY_OF INTEGER;
+    sum: INTEGER:= 0;
+    i INTEGER;
+BEGIN
+    READ(arr1);
+    READ(arr2);
+    FOR i FROM 0 TO arr1.length-1 STEP 1  DO
+        htab.insert(arr1[i],1);         // assuming that there are no duplicates within a set
+    END_FOR
+    FOR i FROM 0 TO arr2.length-1 STEP 1  DO
+        IF (htab.lookup(arr2[i])) THEN
+            htab.insert(arr2[i],2);
+        ELSE
+            htab.insert(arr2[i],1);
+        END_IF
+    END_FOR
+    FOR i FROM 0 TO arr1.length-1 STEP 1  DO
+        IF (htab.get(arr1[i])=2) THEN
+            sum:=sum+arr1[i]*2;
+        END_IF
+    END_FOR
+END
